@@ -1,3 +1,17 @@
+# Current security work — 2026-11-19
+
+**Active feature:** `security-hardening-20261119` (in review).
+**Branch:** `security/family-cabinet-hardening-20261119` from master `29bd8a8849bec65ba603c124bd5b9bb95a1ceada`.
+**Scope:** Source-only privacy boundaries, asset metadata validation, safe URL schemes, generated hash-aware CSP, GitHub Actions security gates and minimal deployment privileges.
+
+**Changed:** `scripts/public-assets.mjs`, `scripts/site-urls.mjs`, `scripts/verify-build.mjs`, `astro.config.mjs`, tests, `.github/workflows/deploy.yml`, README and review documentation. Existing bilingual layout and archive interaction intentionally unchanged.
+
+**Verification required:** GitHub Actions PR build, tests, public-asset guard, Astro 7 CSP generation, `npm audit`, Gitleaks full-history scan, plus browser inspection of both languages and print/search features. Do not treat a successful older master deployment as evidence for this branch.
+
+**Residual risks:** Public repository remains unsuitable for private source materials; other GitHub Pages projects share the `leo0331.github.io` browser origin. Refer to `docs/SECURITY_REVIEW_2026-11-19.md`.
+
+---
+
 # Session Progress Log
 
 ## Current State
