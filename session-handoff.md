@@ -4,7 +4,7 @@ Security changes are staged only on `security/family-cabinet-hardening-20261119`
 
 See `docs/SECURITY_REVIEW_2026-11-19.md` and the active `security-hardening-20261119` entry in `feature_list.json`.
 
-Next: validate PR CI (npm check, tests, Astro build, generated page verification, npm audit, Gitleaks). If a gate fails, correct only the specific failure on the security branch; preserve publication protections. A production deployment requires an explicit merge after owner review.
+PR #11 build job has passed npm audit, Astro check, unit tests, build and generated-page verification. Gitleaks full-history scan remains failed because of historical payment test credentials; the credential owner must determine whether they are active and rotate/revoke if necessary. Do not suppress real historical secrets or merge until the blocker is addressed. Browser smoke under CSP and post-merge deployment remain unverified.
 
 ---
 
