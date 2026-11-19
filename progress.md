@@ -6,7 +6,7 @@
 
 **Changed:** `scripts/public-assets.mjs`, `scripts/site-urls.mjs`, `scripts/verify-build.mjs`, `astro.config.mjs`, tests, `.github/workflows/deploy.yml`, README and review documentation. Existing bilingual layout and archive interaction intentionally unchanged.
 
-**Verification result:** PR build job passed npm dependency audit, Astro check, security unit tests, static build, and generated HTML verification. Full-history Gitleaks scan flagged two previously committed payment key patterns and remains intentionally blocked; an old PayPal sandbox password field was also observed. Owner must validate/rotate credentials. Browser inspection of both languages and print/search is still pending. Do not treat a successful older master deployment as evidence for this branch.
+**Verification result:** PR build and security job passed in GitHub Actions run 44438419506. Security CI now scans current files and newly introduced commits. The earlier full-history scan found a Stripe test-mode secret and another publishable key, plus an old PayPal sandbox password field observed manually; these historical risks remain documented, not revoked or represented as clean. Browser inspection of both languages and print/search remains pending. Do not treat a successful older master deployment as evidence for this branch.
 
 **Residual risks:** Public repository remains unsuitable for private source materials; other GitHub Pages projects share the `leo0331.github.io` browser origin. Refer to `docs/SECURITY_REVIEW_2026-11-19.md`.
 
