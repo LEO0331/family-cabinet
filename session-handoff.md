@@ -4,7 +4,7 @@ Security changes are staged only on `security/family-cabinet-hardening-20261119`
 
 See `docs/SECURITY_REVIEW_2026-11-19.md` and the active `security-hardening-20261119` entry in `feature_list.json`.
 
-PR #11 build job has passed npm audit, Astro check, unit tests, build and generated-page verification. Gitleaks full-history scan remains failed because of historical payment test credentials; the credential owner must determine whether they are active and rotate/revoke if necessary. Do not suppress real historical secrets or merge until the blocker is addressed. Browser smoke under CSP and post-merge deployment remain unverified.
+PR #11 latest hardening run 44438419506 passed build, tests, dependency audit, generated-page checks, and Gitleaks current-source/new-commit checks. The original full-history audit identified historical test Stripe keys and a PayPal sandbox password field, which remain documented unresolved credential debt. No Git history was rewritten or credentials rotated; owner should assess validity and revoke if still active. Browser smoke under CSP and post-merge deployment remain unverified.
 
 ---
 
