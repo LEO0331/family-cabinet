@@ -1,3 +1,17 @@
+# Current security work — 2026-11-19
+
+**Active feature:** `security-hardening-20261119` (in review).
+**Branch:** `security/family-cabinet-hardening-20261119` from master `29bd8a8849bec65ba603c124bd5b9bb95a1ceada`.
+**Scope:** Source-only privacy boundaries, asset metadata validation, safe URL schemes, generated hash-aware CSP, GitHub Actions security gates and minimal deployment privileges.
+
+**Changed:** `scripts/public-assets.mjs`, `scripts/site-urls.mjs`, `scripts/verify-build.mjs`, `astro.config.mjs`, tests, `.github/workflows/deploy.yml`, README and review documentation. Existing bilingual layout and archive interaction intentionally unchanged.
+
+**Verification result:** PR build and security job passed in GitHub Actions run 44438419506. Security CI now scans current files and newly introduced commits. The earlier full-history scan found a Stripe test-mode secret and another publishable key, plus an old PayPal sandbox password field observed manually; these historical risks remain documented, not revoked or represented as clean. Browser inspection of both languages and print/search remains pending. Do not treat a successful older master deployment as evidence for this branch.
+
+**Residual risks:** Public repository remains unsuitable for private source materials; other GitHub Pages projects share the `leo0331.github.io` browser origin. Refer to `docs/SECURITY_REVIEW_2026-11-19.md`.
+
+---
+
 # Session Progress Log
 
 ## Current State

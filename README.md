@@ -26,7 +26,13 @@ An object can matter long after its practical use changes. Family Cabinet record
 
 ## Privacy and demonstration content
 
-All current records and artwork are fictional. This is a public site, so real private family stories, addresses, locations, and photographs do not belong in this repository. The publishing build accepts only records marked `public`; records marked `family` or `private` stop the build before their images can be processed.
+All current records and artwork are fictional. **This is a public GitHub repository and a public website, not private family storage.** Do not commit private family stories, names, addresses, locations, raw photographs, original image metadata, account credentials, or family/private draft records here—even in files that are not rendered. A failed build cannot hide source files or remove them from Git history.
+
+Before contributing, keep all private source material outside this repository, use fictional or explicitly approved public records, strip location/EXIF/XMP metadata from publishable photos, and review both English Markdown and Chinese translations. Never use `visibility: public` merely to make a draft build.
+
+The pre-build guard rejects Markdown marked `family` or `private`, checks that local collection illustrations are referenced, rejects unexpected files and active SVG content in public asset directories, and blocks common photo metadata. These checks **reduce accidental publication**, but do not detect every personal detail or replace manual review.
+
+[Security review, remediation status, and publication checklist](docs/SECURITY_REVIEW_2026-11-19.md).
 
 ## What may come next
 
@@ -73,6 +79,7 @@ npm run dev
 Open the URL Astro prints, including `/family-cabinet/`. Before publishing, run:
 
 ```bash
+npm audit --audit-level=high
 npm run check
 npm test
 npm run build

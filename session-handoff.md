@@ -1,3 +1,13 @@
+# Session Handoff — Family Cabinet Security Hardening (2026-11-19)
+
+Security changes are staged only on `security/family-cabinet-hardening-20261119`. The original site's public bilingual UI and `master` branch have not been changed in this task.
+
+See `docs/SECURITY_REVIEW_2026-11-19.md` and the active `security-hardening-20261119` entry in `feature_list.json`.
+
+PR #11 latest hardening run 44438419506 passed build, tests, dependency audit, generated-page checks, and Gitleaks current-source/new-commit checks. The original full-history audit identified historical test Stripe keys and a PayPal sandbox password field, which remain documented unresolved credential debt. No Git history was rewritten or credentials rotated; owner should assess validity and revoke if still active. Browser smoke under CSP and post-merge deployment remain unverified.
+
+---
+
 # Session Handoff
 
 ## Latest objective — 2026-10-02
