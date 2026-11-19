@@ -27,7 +27,7 @@ function assertSiteUrl(raw, page, exists, attribute = 'href') {
 }
 
 export function auditHtmlLinks(html, page, exists) {
-  for (const tag of html.match(/<(?:a|link|img|script|source)\b[^>]*>/gi) ?? []) {
+  for (const tag of html.match(/<(?:a|link|img|script|source)\b(?:[^>"']|"[^"]*"|'[^']*')*>/gi) ?? []) {
     for (const [, attribute, value] of tag.matchAll(/\b(href|src|srcset)="([^"]*)"/gi)) {
       const kind = attribute.toLowerCase();
       if (kind === 'srcset') {
