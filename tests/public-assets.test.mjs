@@ -61,7 +61,7 @@ test('public image guard rejects image references outside the approved items dir
 });
 
 test('public image guard rejects photos with EXIF metadata before publication', () => {
-  const jpeg = Buffer.concat([Buffer.from([0xff, 0xd8, 0xff, 0xe1]), Buffer.from('Exif\\0\\0Private location')]);
+  const jpeg = Buffer.concat([Buffer.from([0xff, 0xd8, 0xff, 0xe1]), Buffer.from('Exif\0\0Private location')]);
   withAssets((paths) => assert.throws(() => assertPublicAssets(paths), /Remove JPEG metadata/), {
     extra: { 'public/portrait.jpg': jpeg },
   });
