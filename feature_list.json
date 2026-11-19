@@ -2,10 +2,23 @@
   "policy": "Track only user-authorized work. The README roadmap is informational and is not an implementation queue. Keep at most one active feature unless ownership is explicitly split.",
   "features": [
     {
+      "id": "security-hardening-20261119",
+      "name": "Security hardening of the public Astro archive",
+      "description": "Strengthen publication privacy safeguards, generated URL protocol checks, Astro CSP, dependency/secret CI gates, and least-privilege Pages deployment while retaining the static bilingual UX.",
+      "dependencies": [
+        "baseline-archive",
+        "astro-upgrade-ci-001"
+      ],
+      "status": "in_review",
+      "evidence": "2026-11-19: proposal on security/family-cabinet-hardening-20261119. Implemented public image/reference/metadata audit, generated-page CSP and URL checks, focused security regression tests, full dependency advisory and Git-history secret scans, and reduced CI permissions. PR CI results pending; public repository privacy and shared GitHub Pages origin remain policy/architectural considerations."
+    },
+    {
       "id": "astro-upgrade-ci-001",
       "name": "Support merged Dependabot Astro upgrade",
       "description": "Retain Dependabot's Astro 7.3.5 and transitive security updates; align CI/local Node requirements and migrate content configuration to the supported loader API.",
-      "dependencies": ["repo-rename-001"],
+      "dependencies": [
+        "repo-rename-001"
+      ],
       "status": "complete",
       "evidence": "2026-10-02: retained merged Astro 7.3.5 and transitive bot updates; CI uses Node 24 via .nvmrc; package/lock require >=22.12.0. Migrated to content.config.ts/glob and handled optional entry body. npm ci: 0 advisories; Astro check: 30 files, 0 diagnostics; tests: 19 passed; build: 52 pages; verify:build passed bilingual routes, public-only records and base-aware links/assets on Node 24.14.0. Remote CI/deployment not run."
     },
@@ -13,7 +26,9 @@
       "id": "repo-rename-001",
       "name": "Family Cabinet repository rename",
       "description": "Align the Pages base, documentation, URL audit, and local origin remote with the renamed family-cabinet repository.",
-      "dependencies": ["archive-depth-001"],
+      "dependencies": [
+        "archive-depth-001"
+      ],
       "status": "complete",
       "evidence": "2026-10-01: origin updated to LEO0331/family-cabinet; remote master verified; Astro check passed, 19 tests passed, 52-page build and generated-site audit passed under /family-cabinet/. No old base references remain in dist."
     },
@@ -29,7 +44,9 @@
       "id": "harness-001",
       "name": "Project agent harness",
       "description": "Add concise startup instructions, feature state, a restartable progress log, and cross-platform full-verification scripts without changing site behavior.",
-      "dependencies": ["baseline-archive"],
+      "dependencies": [
+        "baseline-archive"
+      ],
       "status": "complete",
       "evidence": "Harness validator improved from 20/100 to 100/100. init.ps1 completed npm ci, check, 9 tests, 46-page build, and generated-site audit on 2026-09-30."
     },
@@ -37,7 +54,9 @@
       "id": "archive-depth-001",
       "name": "Deeper static archive",
       "description": "Implement shareable archive filters, bilingual timeline, deterministic related records, optional bilingual image captions, print-friendly records, and fictional public memories without adding services or accounts.",
-      "dependencies": ["baseline-archive"],
+      "dependencies": [
+        "baseline-archive"
+      ],
       "status": "complete",
       "evidence": "2026-10-01: npm run check passed 30 files with 0 diagnostics; npm test passed 19 tests; npm run build generated 52 pages; npm run verify:build passed. Browser verified URL restoration, English/Chinese filter switching, reset, chronology, captions, and memory presentation. Print markup/CSS inspected; native print pagination was unavailable in the in-app browser."
     }
