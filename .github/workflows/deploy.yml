@@ -19,7 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pages: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -33,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Audit dependencies, including Astro build tooling
+        run: npm audit --audit-level=high
+
       - name: Check project
         run: npm run check
 
@@ -45,9 +47,6 @@ jobs:
       - name: Verify generated routes and public content
         run: npm run verify:build
 
-      - name: Set up GitHub Pages
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
-        uses: actions/configure-pages@v5
 
       - name: Upload static site
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
@@ -55,9 +54,31 @@ jobs:
         with:
           path: ./dist
 
+  security:
+    name: Secret scanning (full Git history)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan committed history for secrets
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/repo:ro" \
+            -w /repo \
+            -e GIT_CONFIG_COUNT=1 \
+            -e GIT_CONFIG_KEY_0=safe.directory \
+            -e GIT_CONFIG_VALUE_0=/repo \
+            ghcr.io/gitleaks/gitleaks:v8.30.1@sha256:b109bc5f8f76a38196a3e413704fc5b9e3c32360bce4e4b603bd6f45b3721dbb \
+            git --redact --log-opts="--all" --exit-code=1 /repo
+
   deploy:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
-    needs: build
+    needs: [build, security]
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -67,6 +88,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Set up GitHub Pages
+        uses: actions/configure-pages@v5
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
