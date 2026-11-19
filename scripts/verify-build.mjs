@@ -2,16 +2,20 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assertPublicContent } from './publication-policy.mjs';
+import { assertPublicAssets } from './public-assets.mjs';
 import { auditHtmlLinks } from './site-urls.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const dist = join(root, 'dist');
 const content = join(root, 'src/content/objects');
+const assets = join(root, 'src/assets/items');
+const publicAssets = join(root, 'public');
 const files = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((entry) => entry.isDirectory() ? files(join(dir, entry.name)) : [join(dir, entry.name)]);
 const html = files(dist).filter((file) => file.endsWith('.html'));
 const required = ['index.html', 'made/index.html', 'collected/index.html', 'archive/index.html', 'about/index.html', 'timeline/index.html', 'zh/index.html', 'zh/made/index.html', 'zh/collected/index.html', 'zh/archive/index.html', 'zh/about/index.html', 'zh/timeline/index.html'];
 
 assertPublicContent(content);
+assertPublicAssets({ contentDirectory: content, assetDirectory: assets, publicDirectory: publicAssets });
 for (const page of required) if (!existsSync(join(dist, page))) throw new Error(`Missing route: ${page}`);
 const slugs = new Set(readdirSync(content).filter((name) => name.endsWith('.md')).map((name) => name.slice(0, -3)));
 const memorySlugs = readdirSync(content).filter((name) => name.endsWith('.md') && /^type:\s*memory\s*$/m.test(readFileSync(join(content, name), 'utf8')));
@@ -45,6 +49,14 @@ for (const file of html) {
   const language = page.startsWith('zh/') ? 'zh-TW' : 'en';
   if (!source.includes(`<html lang="${language}"`)) throw new Error(`Wrong document language: ${page}`);
   if (!source.includes('hreflang="en"') || !source.includes('hreflang="zh-TW"')) throw new Error(`Missing language alternatives: ${page}`);
+  const cspTag = source.match(/<meta\\b[^>]*http-equiv="content-security-policy"[^>]*>/i)?.[0];
+  if (!cspTag) throw new Error(`Missing generated Content Security Policy: ${page}`);
+  for (const directive of ['default-src', 'script-src', 'style-src', 'object-src', 'base-uri', 'form-action']) {
+    if (!cspTag.includes(directive)) throw new Error(`Missing CSP directive ${directive}: ${page}`);
+  }
+  if (cspTag.includes("'unsafe-inline'") && /script-src[^;]*'unsafe-inline'/.test(cspTag)) {
+    throw new Error(`Unsafe inline scripts allowed by CSP: ${page}`);
+  }
   auditHtmlLinks(source, page, (path) => existsSync(join(dist, path)));
 }
 
