@@ -49,7 +49,7 @@ for (const file of html) {
   const language = page.startsWith('zh/') ? 'zh-TW' : 'en';
   if (!source.includes(`<html lang="${language}"`)) throw new Error(`Wrong document language: ${page}`);
   if (!source.includes('hreflang="en"') || !source.includes('hreflang="zh-TW"')) throw new Error(`Missing language alternatives: ${page}`);
-  const cspTag = source.match(/<meta\\b[^>]*http-equiv="content-security-policy"[^>]*>/i)?.[0];
+  const cspTag = source.match(/<meta\b[^>]*http-equiv="content-security-policy"[^>]*>/i)?.[0];
   if (!cspTag) throw new Error(`Missing generated Content Security Policy: ${page}`);
   for (const directive of ['default-src', 'script-src', 'style-src', 'object-src', 'base-uri', 'form-action']) {
     if (!cspTag.includes(directive)) throw new Error(`Missing CSP directive ${directive}: ${page}`);
